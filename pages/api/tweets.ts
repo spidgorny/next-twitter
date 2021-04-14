@@ -1,9 +1,9 @@
-import {NextApiRequest, NextApiResponse} from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 
-const Twitter = require('twitter-v2');
+const Twitter = require("twitter-v2");
 
 if (!process.env.TWITTER_KEY) {
-	throw new Error('TWITTER_KEY undefined');
+	throw new Error("TWITTER_KEY undefined");
 }
 
 const client = new Twitter({
@@ -14,7 +14,17 @@ const client = new Twitter({
 });
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-	const {data} = await client.get('tweets', {ids: '1228393702244134912'});
-	console.log(data);
-	res.status(200).json(data)
-}
+	const user = req.query.user;
+	let endpoint = `users/${user}/tweets`;
+	console.log(endpoint);
+	try {
+		const { data } = await client.get(endpoint, {
+			exclude: "retweets,replies",
+			max_results: 5,
+		});
+		// console.log(data);
+		res.status(200).json(data);
+	} catch (e) {
+		res.status(500).json({ error: e.message });
+	}
+};

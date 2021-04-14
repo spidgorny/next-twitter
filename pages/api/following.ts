@@ -15,7 +15,17 @@ const client = new Twitter({
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 	const token = await jwt.getToken({ req, secret: process.env.SECRET });
 
-	const { data } = await client.get(`users/${token.id}/following`, {});
-	console.log(data);
-	res.status(200).json(data);
+	try {
+		if (!token.id) {
+			throw new Error("not logged-in");
+		}
+		const { data } = await client.get(`users/${token.id}/following`, {
+			max_results: 10,
+			"user.fields": "profile_image_url",
+		});
+		// console.log(data);
+		res.status(200).json(data);
+	} catch (e) {
+		res.status(500).json({ error: e.message });
+	}
 };
