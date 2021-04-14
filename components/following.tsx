@@ -10,8 +10,9 @@ export interface Follower {
 }
 
 export default function Following() {
-	const { isLoading, error, data } = useQuery("following", () =>
-		fetch("/api/following").then((res) => res.json())
+	const { isLoading, error, data } = useQuery<Follower[], Error>(
+		"following",
+		() => fetch("/api/following").then((res) => res.json())
 	);
 
 	return (

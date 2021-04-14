@@ -13,6 +13,7 @@ const client = new Twitter({
 });
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
+	// @ts-ignore
 	const token = await jwt.getToken({ req, secret: process.env.SECRET });
 
 	try {

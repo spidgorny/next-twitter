@@ -37,7 +37,9 @@ export default function Home() {
 
 					{session && (
 						<Navbar.Text className="text-white">
-							<Image src={session.user.image} roundedCircle />
+							{session.user.image && (
+								<Image src={session.user.image} roundedCircle />
+							)}
 							<span className="px-3">{session.user.name}</span>
 							<button onClick={() => signOut()}>Sign out</button>
 						</Navbar.Text>

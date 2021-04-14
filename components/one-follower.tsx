@@ -9,11 +9,14 @@ export interface Tweet {
 }
 
 export default function OneFollower(props: { user: Follower }) {
-	const { isLoading, error, data } = useQuery(["tweets", props.user.id], () => {
-		let url = new URL("/api/tweets", document.location.href);
-		url.searchParams.set("user", props.user.id);
-		return fetch(url.toString()).then((res) => res.json());
-	});
+	const { isLoading, error, data } = useQuery<Tweet[], Error>(
+		["tweets", props.user.id],
+		() => {
+			let url = new URL("/api/tweets", document.location.href);
+			url.searchParams.set("user", props.user.id);
+			return fetch(url.toString()).then((res) => res.json());
+		}
+	);
 
 	// console.log(props.user, data);
 	return (
