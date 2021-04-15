@@ -1,6 +1,8 @@
-import { Alert, Container, Spinner } from "react-bootstrap";
+import { Alert, Button, Container, Spinner } from "react-bootstrap";
 import { useQuery } from "react-query";
 import OneFollower from "./one-follower";
+import axios from "axios";
+import { TweetsPlaceholder } from "./landing";
 
 export interface Follower {
 	id: string;
@@ -10,17 +12,37 @@ export interface Follower {
 }
 
 export default function Following() {
-	const { isLoading, error, data } = useQuery<Follower[], Error>(
+	const { isLoading, error, data, refetch } = useQuery<Follower[], Error>(
 		"following",
-		() => fetch("/api/following").then((res) => res.json())
+		() => {
+			try {
+				return axios.get("/api/following").then((res) => res.data);
+			} catch (e) {
+				console.error(e);
+				throw e;
+			}
+		}
 	);
 
+	console.log(data);
 	return (
-		<>
-			{isLoading && <Spinner animation="border" size="sm" />}
-			{error && <Alert>{error.message}</Alert>}
+		<div className="py-3">
+			{error && (
+				<Alert variant="danger">
+					<p>{error.message}</p>
+					{!isLoading && <Button onClick={() => refetch()}>Try Again</Button>}
+				</Alert>
+			)}
+			{isLoading && (
+				<div>
+					<Spinner animation="border" size="sm" />
+					<TweetsPlaceholder />
+				</div>
+			)}
 			{data &&
-				data.map((follower: Follower) => <OneFollower user={follower} />)}
-		</>
+				data.map((follower: Follower) => (
+					<OneFollower key={follower.id} user={follower} />
+				))}
+		</div>
 	);
 }

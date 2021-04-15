@@ -2,6 +2,7 @@ import { Alert, Card, Container, Spinner } from "react-bootstrap";
 import { useQuery } from "react-query";
 import { Tweet } from "./one-follower";
 import { Follower } from "./following";
+import axios from "axios";
 
 export default function TweetBox(props: { user: Follower; tweet: Tweet }) {
 	let tweetLink =
@@ -10,7 +11,7 @@ export default function TweetBox(props: { user: Follower; tweet: Tweet }) {
 	const { isLoading, error, data } = useQuery(["embed", props.tweet.id], () => {
 		const url = new URL("/api/embed", document.location.href);
 		url.searchParams.set("tweetLink", tweetLink);
-		return fetch(url.toString()).then((res) => res.json());
+		return axios.get(url.toString()).then((res) => res.data);
 	});
 
 	return (

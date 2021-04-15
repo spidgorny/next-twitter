@@ -6,8 +6,9 @@ import {
 	TextBlock,
 	TextRow,
 } from "react-placeholder/lib/placeholders";
+import "react-placeholder/lib/reactPlaceholder.css";
 
-export default function Landing(props: { onClick: () => void }) {
+export function TweetsPlaceholder(props: { animation?: boolean }) {
 	const awesomePlaceholder = (
 		<div className="my-awesome-placeholder">
 			<div className="d-flex p-3">
@@ -25,6 +26,19 @@ export default function Landing(props: { onClick: () => void }) {
 	);
 
 	return (
+		<ReactPlaceholder
+			ready={false}
+			customPlaceholder={awesomePlaceholder}
+			className="py-3"
+			showLoadingAnimation={props.animation}
+		>
+			<div />
+		</ReactPlaceholder>
+	);
+}
+
+export default function Landing(props: { onClick: () => void }) {
+	return (
 		<div>
 			<Jumbotron className="my-3">
 				<h1>Last 5 Tweets</h1>
@@ -35,27 +49,10 @@ export default function Landing(props: { onClick: () => void }) {
 					Sign in with Twitter
 				</Button>
 			</div>
-			<ReactPlaceholder
-				ready={false}
-				customPlaceholder={awesomePlaceholder}
-				className="py-3"
-			>
-				<div />
-			</ReactPlaceholder>
-			<ReactPlaceholder
-				ready={false}
-				customPlaceholder={awesomePlaceholder}
-				className="py-3"
-			>
-				<div />
-			</ReactPlaceholder>
-			<ReactPlaceholder
-				ready={false}
-				customPlaceholder={awesomePlaceholder}
-				className="py-3"
-			>
-				<div />
-			</ReactPlaceholder>
+
+			<TweetsPlaceholder />
+			<TweetsPlaceholder />
+			<TweetsPlaceholder />
 		</div>
 	);
 }

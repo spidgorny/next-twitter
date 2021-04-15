@@ -16,6 +16,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 	// @ts-ignore
 	const token = await jwt.getToken({ req, secret: process.env.SECRET });
 
+	// res.status(500).json({ error: "Trigger error" });
+	// return;
+
 	try {
 		if (!token.id) {
 			throw new Error("not logged-in");

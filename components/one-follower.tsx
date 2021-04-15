@@ -2,6 +2,7 @@ import { Alert, Image, Media, Spinner } from "react-bootstrap";
 import { useQuery } from "react-query";
 import TweetBox from "./tweet-box";
 import { Follower } from "./following";
+import axios from "axios";
 
 export interface Tweet {
 	id: string;
@@ -14,7 +15,7 @@ export default function OneFollower(props: { user: Follower }) {
 		() => {
 			let url = new URL("/api/tweets", document.location.href);
 			url.searchParams.set("user", props.user.id);
-			return fetch(url.toString()).then((res) => res.json());
+			return axios.get(url.toString()).then((res) => res.data);
 		}
 	);
 
