@@ -2,7 +2,7 @@ import "../styles/globals.css";
 import { Provider } from "next-auth/client";
 import { AppProps } from "next/app";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const queryClient = new QueryClient();
 

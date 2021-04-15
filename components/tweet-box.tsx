@@ -23,7 +23,7 @@ export default function TweetBox(props: { user: Follower; tweet: Tweet }) {
 				</div>
 				<div>
 					<a href={tweetLink} target="twitter">
-						open
+						[&#x2B77;]
 					</a>
 				</div>
 			</div>
