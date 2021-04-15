@@ -24,8 +24,8 @@ export function Header(props: {
 					<Nav.Link href="/api/hello" className="text-white">
 						Hello
 					</Nav.Link>
-					<Nav.Link href="/api/followers" className="text-white">
-						followers
+					<Nav.Link href="/api/following" className="text-white">
+						following
 					</Nav.Link>
 				</Nav>
 				<Navbar.Text>

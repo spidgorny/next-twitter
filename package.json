@@ -18,11 +18,12 @@
     "react-infinite-scroller": "^1.2.4",
     "react-placeholder": "^4.1.0",
     "react-query": "^3.13.8",
-    "twitter-v2": "^1.1.0"
+    "twitter-v2": "https://github.com/spidgorny/twitter-v2#get-request-with-meta-and-headers"
   },
   "devDependencies": {
     "@types/next-auth": "^3.13.0",
     "@types/react": "^17.0.3",
+    "@types/react-infinite-scroller": "^1.2.1",
     "prettier": "^2.2.1",
     "typescript": "^4.2.4"
   },

@@ -29,7 +29,7 @@ export default NextAuth({
 		 * @return {string}          URL the client will be redirect to
 		 */
 		async redirect(url, baseUrl) {
-			console.log("redirect", { url, baseUrl });
+			// console.log("redirect", { url, baseUrl });
 			return url.startsWith(baseUrl) ? url : baseUrl;
 		},
 		/**
@@ -41,7 +41,7 @@ export default NextAuth({
 		 * @return {object}            JSON Web Token that will be saved
 		 */
 		async jwt(token, user, account, profile, isNewUser) {
-			console.log({ token, user, account, profile, isNewUser });
+			// console.log({ token, user, account, profile, isNewUser });
 			// Add access_token to the token right after signin
 			if (account?.accessToken) {
 				token.accessToken = account.accessToken;
