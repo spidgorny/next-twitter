@@ -15,7 +15,7 @@ export default function OneFollower(props: { user: Follower }) {
 		() => {
 			let url = new URL("/api/tweets", document.location.href);
 			url.searchParams.set("user", props.user.id);
-			return axios.get(url.toString()).then((res) => res.data);
+			return axios.get(url.toString()).then((res) => res.data.data);
 		}
 	);
 

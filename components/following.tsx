@@ -1,8 +1,10 @@
 import { Alert, Button, Container, Spinner } from "react-bootstrap";
-import { useQuery } from "react-query";
+import { useInfiniteQuery, useQuery } from "react-query";
 import OneFollower from "./one-follower";
 import axios from "axios";
 import { TweetsPlaceholder } from "./landing";
+import InfiniteScroll from "react-infinite-scroller";
+import { useCallback, useState } from "react";
 
 export interface Follower {
 	id: string;
@@ -12,17 +14,36 @@ export interface Follower {
 }
 
 export default function Following() {
-	const { isLoading, error, data, refetch } = useQuery<Follower[], Error>(
+	const [nextToken, setNextToken] = useState((null as unknown) as string);
+
+	const { isLoading, error, data, refetch, fetchNextPage } = useInfiniteQuery<
+		Follower[],
+		Error
+	>(
 		"following",
-		() => {
+		async () => {
 			try {
-				return axios.get("/api/following").then((res) => res.data);
+				let url = "/api/following";
+				let params = { nextToken: nextToken !== null ? nextToken : undefined };
+				console.warn(url, params);
+				const res = await axios.get(url, {
+					params,
+				});
+				console.log({ nextToken, data: res.data });
+				setNextToken(res.data.meta?.next_token);
+				return res.data.data;
 			} catch (e) {
 				console.error(e);
 				throw e;
 			}
-		}
+		},
+		{ keepPreviousData: true }
 	);
+
+	const loadFunc = useCallback(() => {
+		console.log("loadFunc", nextToken);
+		fetchNextPage().then(() => {});
+	}, [fetchNextPage, nextToken]);
 
 	console.log(data);
 	return (
@@ -39,10 +60,25 @@ export default function Following() {
 					<TweetsPlaceholder />
 				</div>
 			)}
-			{data &&
-				data.map((follower: Follower) => (
-					<OneFollower key={follower.id} user={follower} />
-				))}
+			<InfiniteScroll
+				pageStart={0}
+				loadMore={loadFunc}
+				hasMore={nextToken === null || !!nextToken}
+				loader={
+					<div className="loader" key={0}>
+						<Spinner animation="border" size="sm" /> Loading ...
+					</div>
+				}
+			>
+				<div className="sections">
+					{data &&
+						data.pages.map((section: Follower[]) =>
+							section.map((follower: Follower) => (
+								<OneFollower key={follower.id} user={follower} />
+							))
+						)}
+				</div>
+			</InfiniteScroll>
 		</div>
 	);
 }

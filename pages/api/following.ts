@@ -23,12 +23,19 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		if (!token.id) {
 			throw new Error("not logged-in");
 		}
-		const { data } = await client.get(`users/${token.id}/following`, {
+		let parameters: any = {
 			max_results: 10,
 			"user.fields": "profile_image_url",
-		});
+		};
+		let nextToken = req.query.nextToken;
+		if (nextToken) {
+			parameters.pagination_token = nextToken;
+		}
+		const result = await client.get(`users/${token.id}/following`, parameters);
+		const { data, meta } = result.data;
 		// console.log(data);
-		res.status(200).json(data);
+		res.setHeader("cache-control", "public maxage=3600");
+		res.status(200).json({ data: data, meta, headers: result.headers });
 	} catch (e) {
 		const error = e as Error;
 		res.status(500).json({ error: error.message, stack: error.stack });
