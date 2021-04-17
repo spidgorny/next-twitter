@@ -16,37 +16,36 @@ export default function OneFollower(props: { user: Follower }) {
 			let url = new URL("/api/tweets", document.location.href);
 			url.searchParams.set("user", props.user.id);
 			return axios.get(url.toString()).then((res) => res.data.data);
+		},
+		{
+			refetchOnWindowFocus: false,
+			cacheTime: 1000 * 60 * 30, // 30 minutes
 		}
 	);
 
 	// console.log(props.user, data);
 	return (
 		<div className="py-3">
-			<Media>
+			<div>
 				<Image
 					src={props.user.profile_image_url}
 					roundedCircle
 					className="mr-3"
 				/>
-				<Media.Body>
-					<a
-						href={"https://twitter.com/" + props.user.username}
-						target="twitter"
-					>
-						<h5 className="d-inline">{props.user.name}</h5>
-						<p className="d-inline px-3">@{props.user.username}</p>
-					</a>
-					{isLoading && <Spinner animation="border" size="sm" />}
-					{error && <Alert>{error.message}</Alert>}
-					{data && (
-						<div className="d-flex flex-wrap">
-							{data.map((tweet: Tweet) => (
-								<TweetBox key={tweet.id} user={props.user} tweet={tweet} />
-							))}
-						</div>
-					)}
-				</Media.Body>
-			</Media>
+				<a href={"https://twitter.com/" + props.user.username} target="twitter">
+					<h5 className="d-inline">{props.user.name}</h5>
+					<p className="d-inline px-3">@{props.user.username}</p>
+				</a>
+			</div>
+			{isLoading && <Spinner animation="border" size="sm" />}
+			{error && <Alert>{error.message}</Alert>}
+			{data && (
+				<div className="d-flex flex-wrap" style={{ gap: "10px" }}>
+					{data.map((tweet: Tweet) => (
+						<TweetBox key={tweet.id} user={props.user} tweet={tweet} />
+					))}
+				</div>
+			)}
 		</div>
 	);
 }

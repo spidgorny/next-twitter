@@ -32,7 +32,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			parameters.pagination_token = nextToken;
 		}
 		const result = await client.get(`users/${token.id}/following`, parameters);
-		res.setHeader("cache-control", "public maxage=3600");
+		res.setHeader("cache-control", "public, maxage=3600");
 		console.log(result);
 		if (result.text) {
 			res.status(500).json({ error: result.text, headers: result.headers });
