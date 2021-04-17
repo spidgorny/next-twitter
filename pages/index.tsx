@@ -3,7 +3,7 @@ import { signIn, signOut, useSession } from "next-auth/client";
 import Following from "../components/following";
 import { Container, Spinner } from "react-bootstrap";
 import Landing from "../components/landing";
-import { Header } from "./header";
+import { Header } from "../components/header";
 
 export default function Home() {
 	const [session, loading] = useSession();
