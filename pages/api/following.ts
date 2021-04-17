@@ -16,6 +16,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 	// @ts-ignore
 	const token = await jwt.getToken({ req, secret: process.env.SECRET });
 
+	const debug = process.env.NODE_ENV === "development";
+
 	// res.status(500).json({ error: "Trigger error" });
 	// return;
 
@@ -24,7 +26,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			throw new Error("not logged-in");
 		}
 		let parameters: any = {
-			// max_results: 10,
+			max_results: debug ? 10 : 50,
 			"user.fields": "profile_image_url",
 		};
 		let nextToken = req.query.nextToken;

@@ -1,10 +1,10 @@
-import { Alert, Button, Container, Spinner } from "react-bootstrap";
-import { useInfiniteQuery, useQuery } from "react-query";
+import { Alert, Button, Spinner } from "react-bootstrap";
+import { useInfiniteQuery } from "react-query";
 import OneFollower from "./one-follower";
 import axios from "axios";
 import { TweetsPlaceholder } from "./landing";
 import InfiniteScroll from "react-infinite-scroller";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
 export interface Follower {
 	id: string;

@@ -21,6 +21,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		const { data } = await client.get(endpoint, {
 			exclude: "retweets,replies",
 			max_results: 5,
+			expansions: "attachments.media_keys",
+			"media.fields": "media_key,preview_image_url,url",
 		});
 		// console.log(data);
 		res.status(200).json(data);
