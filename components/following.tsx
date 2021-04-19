@@ -66,9 +66,16 @@ export default function Following() {
 
 	const debug = () => process.env.NODE_ENV === "development";
 
-	console.log(data);
+	console.log(process.env.NODE_ENV, data);
 	return (
 		<div className="py-3">
+			{debug() && (
+				<div>
+					<pre>{JSON.stringify({ isLoading, error }, null, 2)}</pre>
+					<Button onClick={() => refetch()}>refetch</Button>
+					<hr />
+				</div>
+			)}
 			{error && (
 				<Alert variant="danger">
 					<p>{error.message}</p>
@@ -80,6 +87,9 @@ export default function Following() {
 					<Spinner animation="border" size="sm" />
 					<TweetsPlaceholder />
 				</div>
+			)}
+			{data && !data.pages[0].data?.length && (
+				<Alert variant="warning">No data. Are you following anybody?</Alert>
 			)}
 			<InfiniteScroll
 				pageStart={0}

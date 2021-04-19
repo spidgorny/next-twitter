@@ -7,14 +7,21 @@ if (!process.env.TWITTER_KEY) {
 	throw new Error("TWITTER_KEY undefined");
 }
 
-const client = new Twitter({
-	consumer_key: process.env.TWITTER_KEY,
-	consumer_secret: process.env.TWITTER_SECRET,
-});
+// const client = new Twitter({
+// 	consumer_key: process.env.TWITTER_KEY,
+// 	consumer_secret: process.env.TWITTER_SECRET,
+// });
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 	// @ts-ignore
 	const token = await jwt.getToken({ req, secret: process.env.SECRET });
+
+	const client = new Twitter({
+		consumer_key: process.env.TWITTER_KEY,
+		consumer_secret: process.env.TWITTER_SECRET,
+		access_token_key: token.oauth_token,
+		access_token_secret: token.oauth_token_secret,
+	});
 
 	const debug = process.env.NODE_ENV === "development";
 
@@ -22,7 +29,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 	// return;
 
 	try {
-		if (!token.id) {
+		if (!token?.id) {
 			throw new Error("not logged-in");
 		}
 		let parameters: any = {

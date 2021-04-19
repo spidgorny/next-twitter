@@ -41,13 +41,19 @@ export default NextAuth({
 		 * @return {object}            JSON Web Token that will be saved
 		 */
 		async jwt(token, user, account, profile, isNewUser) {
-			// console.log({ token, user, account, profile, isNewUser });
+			console.log({ token, user, account, profile, isNewUser });
 			// Add access_token to the token right after signin
 			if (account?.accessToken) {
 				token.accessToken = account.accessToken;
 			}
 			if (account?.id) {
 				token.id = account.id;
+			}
+			if (account?.oauth_token) {
+				token.oauth_token = account.oauth_token;
+			}
+			if (account?.oauth_token_secret) {
+				token.oauth_token_secret = account.oauth_token_secret;
 			}
 			return token;
 		},
