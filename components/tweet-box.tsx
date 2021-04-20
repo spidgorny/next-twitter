@@ -4,6 +4,7 @@ import { Includes, Tweet } from "./one-follower";
 import { Follower } from "./following";
 import axios from "axios";
 import { MdOpenInNew } from "react-icons/md";
+import ReplyTo from "./reply-to";
 
 export default function TweetBox(props: {
 	user: Follower;
@@ -40,7 +41,7 @@ export default function TweetBox(props: {
 	}
 
 	return (
-		<Card className="p-3" style={{ flexGrow: 1, flexBasis: 300 }}>
+		<Card className="p-0" style={{ flexGrow: 1, flexBasis: 300 }}>
 			{image && <Card.Img variant="top" src={image} />}
 			<Card.Body>
 				<div className="clearfix">
@@ -56,6 +57,9 @@ export default function TweetBox(props: {
 					</div>
 				</div>
 			</Card.Body>
+			<Card.Footer>
+				<ReplyTo tweet={props.tweet} />
+			</Card.Footer>
 		</Card>
 	);
 }

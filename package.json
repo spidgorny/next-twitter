@@ -19,6 +19,7 @@
     "react-infinite-scroller": "^1.2.4",
     "react-placeholder": "^4.1.0",
     "react-query": "^3.13.10",
+    "twitter": "^1.7.1",
     "twitter-v2": "https://github.com/spidgorny/twitter-v2#get-request-with-meta-and-headers"
   },
   "devDependencies": {

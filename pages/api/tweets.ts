@@ -7,11 +7,6 @@ if (!process.env.TWITTER_KEY) {
 	throw new Error("TWITTER_KEY undefined");
 }
 
-// const client = new Twitter({
-// 	consumer_key: process.env.TWITTER_KEY,
-// 	consumer_secret: process.env.TWITTER_SECRET,
-// });
-
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 	const user = req.query.user;
 	let endpoint = `users/${user}/tweets`;
