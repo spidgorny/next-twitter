@@ -58,7 +58,7 @@ export default function TweetBox(props: {
 				</div>
 			</Card.Body>
 			<Card.Footer>
-				<ReplyTo tweet={props.tweet} />
+				<ReplyTo user={props.user} tweet={props.tweet} />
 			</Card.Footer>
 		</Card>
 	);

@@ -1,10 +1,11 @@
 import { Tweet } from "./one-follower";
 import { Alert, Button, Form } from "react-bootstrap";
-import { IoMdSend } from "react-icons/io";
+import { IoMdClose, IoMdSend } from "react-icons/io";
 import { FormEvent, useState } from "react";
 import axios from "axios";
+import { Follower } from "./following";
 
-export default function ReplyTo(props: { tweet: Tweet }) {
+export default function ReplyTo(props: { user: Follower; tweet: Tweet }) {
 	const [visible, setVisible] = useState<boolean>(false);
 	const [sending, setSending] = useState<boolean>(false);
 	const [staticText, setStatic] = useState<string>("");
@@ -46,19 +47,36 @@ export default function ReplyTo(props: { tweet: Tweet }) {
 							name="reply_text"
 							autoFocus
 							readOnly={sending}
+							defaultValue={"@" + props.user.username + " "}
 						/>
 					)}
 					{staticText && <p>{staticText}</p>}
 				</div>
 				{visible ? (
-					<Button variant="default" type="submit" disabled={sending}>
-						<IoMdSend />
-					</Button>
+					<>
+						<Button variant="default" type="submit" disabled={sending}>
+							<IoMdSend />
+						</Button>
+						<Button
+							variant="default"
+							type="button"
+							onClick={(e) => {
+								e.preventDefault();
+								setVisible(false);
+								setError("");
+							}}
+						>
+							<IoMdClose />
+						</Button>
+					</>
 				) : (
 					<Button
 						variant="default"
 						type="button"
-						onClick={() => setVisible(true)}
+						onClick={(e) => {
+							e.preventDefault();
+							setVisible(true);
+						}}
 						style={{ transform: "scaleX(-1)" }}
 					>
 						<IoMdSend />
