@@ -5,12 +5,14 @@ import { Follower } from "./following";
 import axios from "axios";
 import { MdOpenInNew } from "react-icons/md";
 import ReplyTo from "./reply-to";
+import { useSession } from "next-auth/client";
 
 export default function TweetBox(props: {
 	user: Follower;
 	tweet: Tweet;
 	includes?: Includes;
 }) {
+	const [session, loading] = useSession();
 	let tweetLink =
 		"https://twitter.com/" + props.user.username + "/status/" + props.tweet.id;
 
@@ -57,9 +59,11 @@ export default function TweetBox(props: {
 					</div>
 				</div>
 			</Card.Body>
-			<Card.Footer>
-				<ReplyTo user={props.user} tweet={props.tweet} />
-			</Card.Footer>
+			{session && (
+				<Card.Footer>
+					<ReplyTo user={props.user} tweet={props.tweet} />
+				</Card.Footer>
+			)}
 		</Card>
 	);
 }

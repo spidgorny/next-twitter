@@ -17,8 +17,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		const client = new Twitter({
 			consumer_key: process.env.TWITTER_KEY,
 			consumer_secret: process.env.TWITTER_SECRET,
-			access_token_key: token.oauth_token,
-			access_token_secret: token.oauth_token_secret,
+			access_token_key: token?.oauth_token,
+			access_token_secret: token?.oauth_token_secret,
 		});
 		let parameters: object = {
 			exclude: "retweets,replies",

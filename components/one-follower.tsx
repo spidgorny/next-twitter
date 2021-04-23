@@ -8,6 +8,7 @@ import { MdRefresh } from "react-icons/md";
 import { IoMdDoneAll } from "react-icons/io";
 import useForceUpdate from "use-force-update";
 import { Animated } from "react-animated-css";
+import { TweetsPlaceholder } from "./landing";
 
 export interface Tweet {
 	id: string;
@@ -97,7 +98,7 @@ export default function OneFollower(props: { user: Follower }) {
 					</Button>
 				</div>
 			</div>
-			{isLoading && <Spinner animation="border" size="sm" />}
+			{isLoading && <TweetsPlaceholder />}
 			{error && <Alert>{error.message}</Alert>}
 			{data && (
 				<Animated
