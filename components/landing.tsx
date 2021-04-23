@@ -89,7 +89,7 @@ export default function Landing(props: { onClick: () => void }) {
 
 			<footer className="py-4">
 				<hr />
-				&copy; 2021 Slawa
+				&copy; 2021 <a href="https://github.com/spidgorny/">Slawa</a>
 			</footer>
 		</div>
 	);
