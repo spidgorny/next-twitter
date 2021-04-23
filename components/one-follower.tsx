@@ -5,6 +5,9 @@ import { Follower } from "./following";
 import axios from "axios";
 import { useState } from "react";
 import { MdRefresh } from "react-icons/md";
+import { IoMdDoneAll } from "react-icons/io";
+import useForceUpdate from "use-force-update";
+import { Animated } from "react-animated-css";
 
 export interface Tweet {
 	id: string;
@@ -24,6 +27,8 @@ export interface Includes {
 }
 
 export default function OneFollower(props: { user: Follower }) {
+	const forceUpdate = useForceUpdate();
+	const [visible, setVisible] = useState(true);
 	const [includes, setIncludes] = useState<Includes>();
 	const queryClient = useQueryClient();
 	const { isLoading, error, data, refetch, isFetching } = useQuery<
@@ -32,8 +37,11 @@ export default function OneFollower(props: { user: Follower }) {
 	>(
 		["tweets", props.user.id],
 		async () => {
+			const since = localStorage.getItem("done." + props.user.username);
+			// console.log({ since });
 			let url = new URL("/api/tweets", document.location.href);
 			url.searchParams.set("user", props.user.id);
+			url.searchParams.set("since", since ?? "");
 			const res = await axios.get(url.toString());
 			setIncludes(res.data.includes);
 			return res.data.data;
@@ -43,6 +51,16 @@ export default function OneFollower(props: { user: Follower }) {
 			cacheTime: 1000 * 60 * 30, // 30 minutes
 		}
 	);
+
+	const markDone = () => {
+		setVisible(false);
+		localStorage.setItem(
+			"done." + props.user.username,
+			new Date().toISOString()
+		);
+		forceUpdate();
+		refetch();
+	};
 
 	// console.log(props.user, data);
 	return (
@@ -82,16 +100,29 @@ export default function OneFollower(props: { user: Follower }) {
 			{isLoading && <Spinner animation="border" size="sm" />}
 			{error && <Alert>{error.message}</Alert>}
 			{data && (
-				<div className="d-flex flex-wrap" style={{ gap: "10px" }}>
-					{data.map((tweet: Tweet) => (
-						<TweetBox
-							key={tweet.id}
-							user={props.user}
-							tweet={tweet}
-							includes={includes}
-						/>
-					))}
-				</div>
+				<Animated
+					animationIn="slideInUp"
+					animationOut="fadeOutUp"
+					animationInDuration={1000}
+					animationOutDuration={1000}
+					isVisible={visible}
+				>
+					<div className="d-flex flex-wrap" style={{ gap: "10px" }}>
+						{data.map((tweet: Tweet) => (
+							<TweetBox
+								key={tweet.id}
+								user={props.user}
+								tweet={tweet}
+								includes={includes}
+							/>
+						))}
+					</div>
+					<div className="text-center py-1">
+						<Button variant="success" onClick={() => markDone()}>
+							<IoMdDoneAll /> Done with {props.user.username}
+						</Button>
+					</div>
+				</Animated>
 			)}
 		</div>
 	);

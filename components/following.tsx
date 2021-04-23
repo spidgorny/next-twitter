@@ -37,7 +37,7 @@ export default function Following() {
 				const res = await axios.get(url, {
 					params,
 				});
-				console.log({ pageParam: context.pageParam, data: res.data });
+				// console.log({ pageParam: context.pageParam, data: res.data });
 				return res.data;
 			} catch (e) {
 				console.error(e);
@@ -49,7 +49,7 @@ export default function Following() {
 			refetchOnWindowFocus: false,
 			cacheTime: 1000 * 60 * 60 * 24, // 1 day
 			getNextPageParam: (lastPage, pages) => {
-				console.log("getNextPageParam", lastPage);
+				// console.log("getNextPageParam", lastPage);
 				return lastPage.meta?.next_token;
 			},
 		}
@@ -60,13 +60,13 @@ export default function Following() {
 	};
 
 	const loadFunc = useCallback(() => {
-		console.log("loadFunc", nextToken());
+		// console.log("loadFunc", nextToken());
 		fetchNextPage().then(() => {});
 	}, [fetchNextPage, nextToken]);
 
 	const debug = () => process.env.NODE_ENV === "development";
 
-	console.log(process.env.NODE_ENV, data);
+	// console.log(process.env.NODE_ENV, data);
 	return (
 		<div className="py-3">
 			{debug() && (

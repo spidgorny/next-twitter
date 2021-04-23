@@ -20,12 +20,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			access_token_key: token.oauth_token,
 			access_token_secret: token.oauth_token_secret,
 		});
-		const { data } = await client.get(endpoint, {
+		let parameters: object = {
 			exclude: "retweets,replies",
 			max_results: 5,
 			expansions: "attachments.media_keys",
 			"media.fields": "media_key,preview_image_url,url",
-		});
+		};
+		if (req.query?.since) {
+			parameters = { ...parameters, start_time: req.query?.since };
+		}
+		const { data } = await client.get(endpoint, parameters);
 		// console.log(data);
 		res.status(200).json(data);
 	} catch (e) {
