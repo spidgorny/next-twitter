@@ -5,6 +5,7 @@ import axios from "axios";
 import { TweetsPlaceholder } from "./landing";
 import InfiniteScroll from "react-infinite-scroller";
 import { useCallback } from "react";
+import ListSelector from "./list-selector";
 
 export interface Follower {
 	id: string;
@@ -88,6 +89,7 @@ export default function Following() {
 					<TweetsPlaceholder />
 				</div>
 			)}
+			<ListSelector />
 			{data && !data.pages[0].data?.length && (
 				<Alert variant="warning">No data. Are you following anybody?</Alert>
 			)}

@@ -1,11 +1,14 @@
 import { Session } from "next-auth";
-import { Image, Nav, Navbar } from "react-bootstrap";
+import { Form, FormControl, Image, Nav, Navbar } from "react-bootstrap";
+import { useContext } from "react";
 
 export function Header(props: {
 	session: Session | null | undefined;
 	onClick: () => Promise<void>;
 	onClick1: () => Promise<void>;
 }) {
+	const debug = () => process.env.NODE_ENV === "development";
+
 	return (
 		<Navbar bg="dark" expand="lg" className="text-white">
 			<Navbar.Brand href="." className="text-white">
@@ -17,12 +20,16 @@ export function Header(props: {
 					<Nav.Link href="." className="text-white">
 						Home
 					</Nav.Link>
-					<Nav.Link href="/api/hello" className="text-white">
-						Hello
-					</Nav.Link>
-					<Nav.Link href="/api/following" className="text-white">
-						following
-					</Nav.Link>
+					{debug() && (
+						<>
+							<Nav.Link href="/api/hello" className="text-white">
+								Hello
+							</Nav.Link>
+							<Nav.Link href="/api/following" className="text-white">
+								following
+							</Nav.Link>
+						</>
+					)}
 				</Nav>
 				<Navbar.Text>
 					{!props.session && <button onClick={props.onClick}>Sign in</button>}
