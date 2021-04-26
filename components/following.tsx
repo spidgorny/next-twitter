@@ -4,7 +4,7 @@ import OneFollower from "./one-follower";
 import axios from "axios";
 import { TweetsPlaceholder } from "./landing";
 import InfiniteScroll from "react-infinite-scroller";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import ListSelector from "./list-selector";
 
 export interface Follower {
@@ -23,6 +23,8 @@ interface FollowingResult {
 }
 
 export default function Following() {
+	const [list, setList] = useState<number | undefined>(undefined);
+
 	const { isLoading, error, data, refetch, fetchNextPage } = useInfiniteQuery<
 		FollowingResult,
 		Error
@@ -32,6 +34,7 @@ export default function Following() {
 			try {
 				let url = "/api/following";
 				let params = {
+					list,
 					nextToken: context.pageParam !== null ? context.pageParam : undefined,
 				};
 				console.warn(url, params);
@@ -89,7 +92,12 @@ export default function Following() {
 					<TweetsPlaceholder />
 				</div>
 			)}
-			<ListSelector />
+			<ListSelector
+				setList={(id: number) => {
+					setList(id);
+					setTimeout(() => refetch(), 100);
+				}}
+			/>
 			{data && !data.pages[0].data?.length && (
 				<Alert variant="warning">No data. Are you following anybody?</Alert>
 			)}

@@ -1,7 +1,6 @@
 import { Alert, Button, Form, FormControl, Spinner } from "react-bootstrap";
-import { useInfiniteQuery, useQuery } from "react-query";
+import { useQuery } from "react-query";
 import axios from "axios";
-import { TweetsPlaceholder } from "./landing";
 import { ChangeEvent } from "react";
 
 export interface Lists {
@@ -13,7 +12,7 @@ export interface Lists {
 	}[];
 }
 
-export default function ListSelector() {
+export default function ListSelector(props: { setList: (id: number) => void }) {
 	const { isLoading, error, data, refetch } = useQuery<Lists, Error>(
 		"lists",
 		async () => {
@@ -32,6 +31,7 @@ export default function ListSelector() {
 		const select = e.target as HTMLSelectElement;
 		const value = select.value;
 		console.log(value);
+		props.setList(parseInt(value, 10));
 	};
 
 	return (
