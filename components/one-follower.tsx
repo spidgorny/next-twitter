@@ -120,7 +120,7 @@ export default function OneFollower(props: { user: Follower }) {
 					</div>
 					<div className="text-center py-1">
 						<Button variant="success" onClick={() => markDone()}>
-							<IoMdDoneAll /> Done with {props.user.username}
+							<IoMdDoneAll /> Done with {props.user.username ?? props.user.name}
 						</Button>
 					</div>
 				</Animated>

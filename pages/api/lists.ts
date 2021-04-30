@@ -37,6 +37,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		});
 	} catch (e) {
 		const error = e as Error;
+		console.error(e);
 		res
 			.status(500)
 			.json({ error: error.message, stack: error.stack?.split("\n") });

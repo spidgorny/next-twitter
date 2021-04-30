@@ -11,19 +11,24 @@ export interface Follower {
 	id: string;
 	name: string;
 	username: string;
+	screen_name?: string; // this is a username when querying lists/members.json
 	profile_image_url: string;
 }
 
-interface FollowingResult {
+export interface FollowingResult {
 	data: Follower[];
 	meta: {
 		next_token?: string;
+		previous_cursor?: number;
+		previous_cursor_str?: string;
+		next_cursor?: number;
+		next_cursor_str?: string;
 	};
 	headers: Record<string, any>;
 }
 
 export default function Following() {
-	const [list, setList] = useState<number | undefined>(undefined);
+	const [list, setList] = useState<string | undefined>(undefined);
 
 	const { isLoading, error, data, refetch, fetchNextPage } = useInfiniteQuery<
 		FollowingResult,
@@ -54,13 +59,17 @@ export default function Following() {
 			cacheTime: 1000 * 60 * 60 * 24, // 1 day
 			getNextPageParam: (lastPage, pages) => {
 				// console.log("getNextPageParam", lastPage);
-				return lastPage.meta?.next_token;
+				return lastPage.meta?.next_token ?? lastPage.meta?.next_cursor;
 			},
 		}
 	);
 
 	const nextToken = () => {
-		return data ? data.pages[data.pages.length - 1].meta?.next_token : null;
+		if (!data) {
+			return null;
+		}
+		let lastPage = data.pages[data.pages.length - 1];
+		return lastPage.meta?.next_token ?? lastPage.meta?.next_cursor;
 	};
 
 	const loadFunc = useCallback(() => {
@@ -73,7 +82,7 @@ export default function Following() {
 	// console.log(process.env.NODE_ENV, data);
 	return (
 		<div className="py-3">
-			{debug() && (
+			{debug() && false && (
 				<div>
 					<pre>{JSON.stringify({ isLoading, error }, null, 2)}</pre>
 					<Button onClick={() => refetch()}>refetch</Button>
@@ -93,7 +102,7 @@ export default function Following() {
 				</div>
 			)}
 			<ListSelector
-				setList={(id: number) => {
+				setList={(id: string) => {
 					setList(id);
 					setTimeout(() => refetch(), 100);
 				}}

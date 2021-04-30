@@ -1,0 +1,7 @@
+GET https://api.twitter.com/1.1/lists/members.json?list_id=62587138
+Authorization: 'OAuth oauth_consumer_key="wuRoKanQjqvaECUhwrvqits4l", oauth_nonce="HEBPcfPl05fEAsAekxPo3EFbi6kREaE4", oauth_signature="NRlVFnhMfoEX%2BUx3ERO59J5Ku9o%3D", oauth_signature_method="HMAC-SHA1", oauth_timestamp="1619772871",oauth_token="51616227-sKZIwblhV8DXDarKGtJUiAJ2UR3Loxz9gHRwi0Hn7", oauth_version="1.0"
+
+###
+
+GET https://api.twitter.com/1.1/lists/members.json?list_id=762547139717234700
+Authorization: 'OAuth oauth_consumer_key="wuRoKanQjqvaECUhwrvqits4l", oauth_nonce="HEBPcfPl05fEAsAekxPo3EFbi6kREaE4", oauth_signature="NRlVFnhMfoEX%2BUx3ERO59J5Ku9o%3D", oauth_signature_method="HMAC-SHA1", oauth_timestamp="1619772871",oauth_token="51616227-sKZIwblhV8DXDarKGtJUiAJ2UR3Loxz9gHRwi0Hn7", oauth_version="1.0"
