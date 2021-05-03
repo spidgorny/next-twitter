@@ -11,20 +11,34 @@ import { Animated } from "react-animated-css";
 import { TweetsPlaceholder } from "./landing";
 
 export interface Tweet {
+	author_username: any;
 	id: string;
 	text: string;
 	attachments?: {
 		media_keys: string[];
 	};
+	referenced_tweets?: any[];
+	author_id: string;
+	entities?: {
+		urls?: {
+			display_url: string;
+			end: number;
+			expanded_url: string;
+			start: number;
+			url: string;
+		}[];
+	};
 }
 
 export interface Includes {
-	media: {
+	media?: {
 		media_key: string;
 		type: "photo" | "video";
 		url: string;
 		preview_image_url?: string;
 	}[];
+	users?: Follower[];
+	tweets?: Tweet[];
 }
 
 export default function OneFollower(props: { user: Follower }) {
@@ -115,6 +129,7 @@ export default function OneFollower(props: { user: Follower }) {
 								user={props.user}
 								tweet={tweet}
 								includes={includes}
+								expand={true}
 							/>
 						))}
 					</div>
