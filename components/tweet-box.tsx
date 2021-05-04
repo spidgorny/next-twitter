@@ -7,6 +7,7 @@ import { MdOpenInNew } from "react-icons/md";
 import ReplyTo from "./reply-to";
 import { useSession } from "next-auth/client";
 import { useEffect, useState } from "react";
+import FetchTweet from "./fetch-tweet";
 
 export default function TweetBox(props: {
 	user: Follower;
@@ -42,15 +43,20 @@ export default function TweetBox(props: {
 			const media = props.includes?.media?.filter(
 				(el) => el.media_key === firstMediaKey
 			)?.[0];
+			console.log(props.tweet, props.includes?.media, {
+				firstMediaKey,
+				media,
+			});
 			if (media) {
 				setImage(media.preview_image_url ?? media.url);
 			}
 		}
-	}, [image, setImage]);
+	}, [props.tweet]);
 
+	// subtweet
 	useEffect(() => {
-		console.log(props.tweet);
-		console.log(props.includes);
+		// console.log(props.tweet);
+		// console.log(props.includes);
 
 		if (!image && props.expand) {
 			let firstReference = props.tweet.referenced_tweets?.[0];
@@ -65,6 +71,14 @@ export default function TweetBox(props: {
 					refTweet.author_username = props.tweet.entities?.urls?.[0].expanded_url.split(
 						"/"
 					)[3];
+					// console.log({ refTweet });
+					refTweet.user = {
+						id: refTweet.author_id,
+						username: refTweet.author_username,
+						profile_image_url: "",
+						name: refTweet.author_id,
+						screen_name: refTweet.author_id,
+					};
 					setSubtweet(refTweet);
 					// let firstMediaKey = refTweet?.attachments?.media_keys?.[0];
 					// console.log({ firstMediaKey });
@@ -84,7 +98,7 @@ export default function TweetBox(props: {
 				}
 			}
 		}
-	}, [image]);
+	}, []);
 
 	return (
 		<Card className="p-0" style={{ flexGrow: 1, flexBasis: 300 }}>
@@ -100,19 +114,7 @@ export default function TweetBox(props: {
 						{!data && props.tweet.text}
 						{isLoading && <Spinner animation="border" size="sm" />}
 						{data && <span dangerouslySetInnerHTML={{ __html: data.html }} />}
-						{subtweet && (
-							<TweetBox
-								user={{
-									id: subtweet.author_id,
-									username: subtweet.author_username,
-									profile_image_url: "",
-									name: subtweet.author_id,
-									screen_name: subtweet.author_id,
-								}}
-								tweet={subtweet}
-								expand={true}
-							/>
-						)}
+						{subtweet && <FetchTweet tweet={subtweet} />}
 					</div>
 				</div>
 			</Card.Body>

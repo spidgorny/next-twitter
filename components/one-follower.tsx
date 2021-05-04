@@ -28,6 +28,7 @@ export interface Tweet {
 			url: string;
 		}[];
 	};
+	user?: Follower;
 }
 
 export interface Includes {

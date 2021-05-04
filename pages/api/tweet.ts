@@ -8,8 +8,7 @@ if (!process.env.TWITTER_KEY) {
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-	const user = req.query.user;
-	let endpoint = `users/${user}/tweets`;
+	let endpoint = `tweets/${req.query.id}`;
 	console.log(endpoint);
 	try {
 		// @ts-ignore
@@ -21,19 +20,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			access_token_secret: token?.oauth_token_secret,
 		});
 		let parameters: object = {
-			exclude: "retweets,replies",
-			max_results: 5,
 			expansions:
 				"attachments.media_keys,referenced_tweets.id,referenced_tweets.id.author_id",
 			"media.fields": "media_key,preview_image_url,url",
 			"tweet.fields": "attachments,referenced_tweets,entities",
+			"user.fields": "id,name,username,profile_image_url",
 		};
-		if (req.query?.since) {
-			parameters = { ...parameters, start_time: req.query?.since };
-		}
-		const { data } = await client.get(endpoint, parameters);
-		// console.log(data);
-		res.status(200).json(data);
+		const tweet = await client.get(endpoint, parameters);
+		// console.log(tweet.data);
+		res.status(200).json(tweet.data);
 	} catch (e) {
 		res.status(500).json({ error: e.message });
 	}
